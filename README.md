@@ -1,1 +1,1 @@
-# Sopel-Edge-Detector
+# Sobel-Edge-Detector
