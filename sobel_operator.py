@@ -4,7 +4,10 @@ from numpy.lib.stride_tricks import as_strided
 from PIL import Image
 
 
-def sobel_gradient(input):
+def sobel_edge_detect(input):
+    # Init the x and y gradient kernels
+    # These will be used for determining the "direction" of pixels
+    # which is useful at borders between white/black pixels
     Gx = np.array([[-1, 0, 1],
                    [-1, 0, 1],
                    [-1, 0, 1]])
@@ -13,10 +16,11 @@ def sobel_gradient(input):
                    [0, 0, 0],
                    [1, 1, 1]])
 
-    out = np.zeros((input.shape[0], input.shape[1]), dtype=float)
+    output_image = np.zeros((input.shape[0], input.shape[1]), dtype=float)
 
     padded_image = np.pad(input, 1, 'constant', constant_values=(0, 0))
 
+    # To make convolution easier, use numpy stride tricks to subdivide the original matrix
     input_strided = as_strided(
         padded_image,
         shape=(
@@ -37,18 +41,22 @@ def sobel_gradient(input):
     i = 0
     j = 0
 
-    # y direction
     for row in input_strided:
         for tile in row:
+            # Apply the derivative kernels
             multiplied_x = np.multiply(Gx, tile)
             multiplied_y = np.multiply(Gy, tile)
 
             sum_x_gradient = np.sum(multiplied_x)
             sum_y_gradient = np.sum(multiplied_y)
 
-            out[j, i] = np.hypot(sum_x_gradient, sum_y_gradient)
+            # Sum their result
+            output_image[j, i] = np.hypot(sum_x_gradient, sum_y_gradient)
             i += 1
         i = 0
         j += 1
 
-    return out
+    # Normalize the output image
+    output_image *= 255.0 / np.max(output_image)
+
+    return output_image
