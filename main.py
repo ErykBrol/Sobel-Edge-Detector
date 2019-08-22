@@ -8,4 +8,4 @@ if __name__ == '__main__':
     edges = sobel_edge_detect(img_as_array)
 
     output_img = Image.fromarray(edges.astype(np.uint8), 'L')
-    output_img.save('cat.png')
+    output_img.save('cat-edges.png')
