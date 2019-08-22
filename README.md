@@ -1,6 +1,8 @@
 # Sobel-Edge-Detector
 
-Edge detection algorithm meant to be used with a grayscale image. Applying a Gaussian blur to the input image may remove extra noise resulting in a better output image.
+Edge detection algorithm meant to be used with a grayscale image. 
+
+Applying a Gaussian blur to the input image may remove extra noise resulting in a better output image.
 
 Original:
 
